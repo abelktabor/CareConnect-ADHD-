@@ -63,8 +63,13 @@ class AppSettings {
 class AppSettingsNotifier extends Notifier<AppSettings> {
   @override
   AppSettings build() {
-    final json = ref.watch(localStoreProvider).readJson(StoreKeys.settings);
-    return json == null ? const AppSettings() : AppSettings.fromJson(json);
+    return ref
+        .watch(localStoreProvider)
+        .readAs(
+          StoreKeys.settings,
+          AppSettings.fromJson,
+          orElse: AppSettings.new,
+        );
   }
 
   Future<void> setThemeMode(ThemeMode mode) =>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-07 00:17:31</td>
+            <td class="headerValue">2026-09-07 00:44:51</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -87,21 +87,21 @@
 <span id="L17"><span class="lineNum">      17</span>              : </span>
 <span id="L18"><span class="lineNum">      18</span>              : /// A clock frozen at a fixed instant.</span>
 <span id="L19"><span class="lineNum">      19</span>              : class FixedClock implements Clock {</span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          13 :   const FixedClock(this.instant);</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          14 :   const FixedClock(this.instant);</span></span>
 <span id="L21"><span class="lineNum">      21</span>              : </span>
 <span id="L22"><span class="lineNum">      22</span>              :   /// Convenience for tests: `FixedClock.at(2026, 8, 25, 14, 14)`.</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           4 :   factory FixedClock.at(</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           5 :   factory FixedClock.at(</span></span>
 <span id="L24"><span class="lineNum">      24</span>              :     int year, [</span>
 <span id="L25"><span class="lineNum">      25</span>              :     int month = 1,</span>
 <span id="L26"><span class="lineNum">      26</span>              :     int day = 1,</span>
 <span id="L27"><span class="lineNum">      27</span>              :     int hour = 0,</span>
 <span id="L28"><span class="lineNum">      28</span>              :     int minute = 0,</span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           8 :   ]) =&gt; FixedClock(DateTime(year, month, day, hour, minute));</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          10 :   ]) =&gt; FixedClock(DateTime(year, month, day, hour, minute));</span></span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span>              :   final DateTime instant;</span>
 <span id="L32"><span class="lineNum">      32</span>              : </span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">          12 :   @override</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          12 :   DateTime now() =&gt; instant;</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">          13 :   @override</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          13 :   DateTime now() =&gt; instant;</span></span>
 <span id="L35"><span class="lineNum">      35</span>              : }</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span>              : /// The moment every Week 3 Figma frame is drawn at: Tuesday, August 25 at</span>

@@ -48,6 +48,7 @@ persistence layer, navigation, responsive layout, and accessibility.
 | Integration | `flutter test integration_test -d <device>` | Both journeys end to end on an emulator or phone | on demand |
 | Manual a11y | TalkBack, VoiceOver, OS font scaling, reduce motion | The two-thirds of barriers automation cannot see | ✅ reviewer sign-off |
 | Dependency scan | `dart pub outdated --show-all` (advisories) | No known vulnerable packages | ✅ |
+| Security review | NIST SP 800-218 (SSDF) — see [SECURITY-REVIEW.md](SECURITY-REVIEW.md) | Secure coding, secure defaults, fail-secure behaviour | ✅ |
 
 **Principles**
 
@@ -153,8 +154,8 @@ Record results in the PR template's accessibility section.
 - The `coverage/` folder is committed (assignment requirement) and CI fails
   below the floor (`.github/workflows/flutter.yml`).
 
-**Result (2026-09-07): 220 tests passing, `flutter analyze` clean, line
-coverage 99.6 % (2 702 of 2 714 lines across 62 source files).**
+**Result (2026-09-07): 225 tests passing, `flutter analyze` clean, line
+coverage 99.6 % (2 707 of 2 719 lines across 62 source files).**
 
 Two files carry no coverage data and this is expected, not a gap:
 

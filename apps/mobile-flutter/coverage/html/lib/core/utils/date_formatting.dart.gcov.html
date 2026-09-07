@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-07 00:17:31</td>
+            <td class="headerValue">2026-09-07 00:44:51</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -98,17 +98,17 @@
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">          12 :       _dayHeading.format(dateTime).toUpperCase();</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : </span>
 <span id="L30"><span class="lineNum">      30</span>              :   /// Parses a 24-hour local time such as &quot;08:00&quot; into a [TimeOfDay].</span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">          13 :   static TimeOfDay parseLocalTime(String hhmm) {</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          13 :     final parts = hhmm.split(':');</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">          26 :     if (parts.length != 2) {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">          14 :   static TimeOfDay parseLocalTime(String hhmm) {</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          14 :     final parts = hhmm.split(':');</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">          28 :     if (parts.length != 2) {</span></span>
 <span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           2 :       throw FormatException('Expected HH:mm, got &quot;$hhmm&quot;');</span></span>
 <span id="L35"><span class="lineNum">      35</span>              :     }</span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          26 :     final hour = int.parse(parts[0]);</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          26 :     final minute = int.parse(parts[1]);</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          52 :     if (hour &lt; 0 || hour &gt; 23 || minute &lt; 0 || minute &gt; 59) {</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          28 :     final hour = int.parse(parts[0]);</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          28 :     final minute = int.parse(parts[1]);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          56 :     if (hour &lt; 0 || hour &gt; 23 || minute &lt; 0 || minute &gt; 59) {</span></span>
 <span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           2 :       throw FormatException('Time out of range: &quot;$hhmm&quot;');</span></span>
 <span id="L40"><span class="lineNum">      40</span>              :     }</span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          13 :     return TimeOfDay(hour: hour, minute: minute);</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          14 :     return TimeOfDay(hour: hour, minute: minute);</span></span>
 <span id="L42"><span class="lineNum">      42</span>              :   }</span>
 <span id="L43"><span class="lineNum">      43</span>              : </span>
 <span id="L44"><span class="lineNum">      44</span>              :   /// Formats a [TimeOfDay] as the storage form &quot;08:00&quot;.</span>
@@ -125,12 +125,12 @@
 <span id="L55"><span class="lineNum">      55</span>              :   }</span>
 <span id="L56"><span class="lineNum">      56</span>              : </span>
 <span id="L57"><span class="lineNum">      57</span>              :   /// Combines a calendar day with a wall-clock time.</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          12 :   static DateTime combine(DateTime day, TimeOfDay time) =&gt;</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">          72 :       DateTime(day.year, day.month, day.day, time.hour, time.minute);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          13 :   static DateTime combine(DateTime day, TimeOfDay time) =&gt;</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">          78 :       DateTime(day.year, day.month, day.day, time.hour, time.minute);</span></span>
 <span id="L60"><span class="lineNum">      60</span>              : </span>
 <span id="L61"><span class="lineNum">      61</span>              :   /// Midnight at the start of [dateTime]'s day.</span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">          15 :   static DateTime startOfDay(DateTime dateTime) =&gt;</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">          60 :       DateTime(dateTime.year, dateTime.month, dateTime.day);</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">          16 :   static DateTime startOfDay(DateTime dateTime) =&gt;</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">          64 :       DateTime(dateTime.year, dateTime.month, dateTime.day);</span></span>
 <span id="L64"><span class="lineNum">      64</span>              : </span>
 <span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          12 :   static bool isSameDay(DateTime a, DateTime b) =&gt;</span></span>
 <span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         102 :       a.year == b.year &amp;&amp; a.month == b.month &amp;&amp; a.day == b.day;</span></span>

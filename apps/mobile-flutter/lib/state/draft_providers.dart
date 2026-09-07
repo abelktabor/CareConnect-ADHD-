@@ -45,12 +45,13 @@ class MedicationDraftNotifier extends Notifier<MedicationDraft> {
   @override
   MedicationDraft build() {
     ref.onDispose(() => _debounce?.cancel());
-    final json = ref
+    return ref
         .watch(localStoreProvider)
-        .readJson(StoreKeys.medicationDraft);
-    return json == null
-        ? const MedicationDraft()
-        : MedicationDraft.fromJson(json);
+        .readAs(
+          StoreKeys.medicationDraft,
+          MedicationDraft.fromJson,
+          orElse: MedicationDraft.new,
+        );
   }
 
   /// Applies a change and schedules an autosave.
@@ -123,12 +124,13 @@ class AppointmentDraftNotifier extends Notifier<AppointmentDraft> {
   @override
   AppointmentDraft build() {
     ref.onDispose(() => _debounce?.cancel());
-    final json = ref
+    return ref
         .watch(localStoreProvider)
-        .readJson(StoreKeys.appointmentDraft);
-    return json == null
-        ? const AppointmentDraft()
-        : AppointmentDraft.fromJson(json);
+        .readAs(
+          StoreKeys.appointmentDraft,
+          AppointmentDraft.fromJson,
+          orElse: AppointmentDraft.new,
+        );
   }
 
   void update(AppointmentDraft Function(AppointmentDraft draft) change) {

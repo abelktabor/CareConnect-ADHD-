@@ -4,7 +4,7 @@
 ![Riverpod](https://img.shields.io/badge/state-Riverpod%203-5B4B8A)
 ![go_router](https://img.shields.io/badge/navigation-go__router-1B5E7A)
 ![WCAG 2.2 AA](https://img.shields.io/badge/WCAG-2.2%20AA-success)
-![Tests](https://img.shields.io/badge/tests-220%20passing-2E7D4F)
+![Tests](https://img.shields.io/badge/tests-225%20passing-2E7D4F)
 ![Coverage](https://img.shields.io/badge/line%20coverage-99.6%25-2E7D4F)
 
 **Assignment 4 — Flutter Mobile Implementation & Testing** · SWEN 661 (UMGC,
@@ -201,7 +201,7 @@ cognitive-load walkthrough are in **[docs/TEST-PLAN.md](docs/TEST-PLAN.md)**.
 flutter test --coverage && genhtml coverage/lcov.info -o coverage/html && open coverage/html/index.html
 ```
 
-**Current result: 220 tests passing, line coverage 99.6 % (2 702 of 2 714
+**Current result: 225 tests passing, line coverage 99.6 % (2 707 of 2 719
 lines across 62 source files).**
 
 - **HTML report:** [`coverage/html/index.html`](coverage/html/index.html) (committed, per the assignment)
@@ -276,14 +276,42 @@ copy, buttons, form labels and status text remain at 16 px or larger.
 
 ## Security and dependency scanning
 
-- `flutter analyze` with a strict `analysis_options.yaml` (strict casts /
-  inference / raw types) — **zero issues**.
-- `dart pub outdated --show-all` surfaces pub.dev security advisories for
-  every dependency; run before each PR (CI prints it).
-- No secrets, keys or PHI: the app is local-only, and a unit test asserts the
-  seed data is fictional (`example.test` emails, 555-01xx phone numbers).
-- Dependencies are limited to four well-maintained packages
-  (`flutter_riverpod`, `go_router`, `shared_preferences`, `intl`).
+The app was reviewed against **NIST SP 800-218 (SSDF v1.1)**, focusing on the
+PW (Produce Well-Secured Software) and PS (Protect the Software) practice
+groups. Full findings and control mapping: **[docs/SECURITY-REVIEW.md](docs/SECURITY-REVIEW.md)**.
+
+Controls in place:
+
+- **PW.5.1 — secure coding.** No secrets, keys or credentials in source (the
+  app has no auth provider or network calls at all). All user input is
+  validated with plain-language errors. There is no SQL, shell, or template
+  interpolation anywhere, so the classic injection classes do not arise.
+- **PW.5.1 — fail securely.** Stored documents are structurally untrusted: a
+  truncated write or an edited preferences file on a rooted device can leave
+  valid JSON with the wrong shape. `LocalStore.readAs` catches that,
+  discards the bad document and falls back to a known-good value, so a
+  corrupt entry can never leave the app unable to start. Covered by tests.
+- **PW.6 / PW.9.1 — secure defaults.** `flutter analyze` runs with strict
+  casts, strict inference and strict raw types, and reports zero issues.
+  The Android manifest sets `allowBackup=false`, `fullBackupContent=false`,
+  a `data_extraction_rules.xml` that excludes all domains, and
+  `usesCleartextTraffic=false`.
+- **PW.4.1 — third-party components.** Four well-maintained direct
+  dependencies. `pubspec.lock` is committed, so every build resolves the
+  same versions. `dart pub outdated --show-all` surfaces pub.dev security
+  advisories and runs in CI.
+- **PW.8 — security testing.** Negative and boundary cases are tested
+  explicitly: malformed stored state, corrupt JSON, out-of-range times,
+  expired undo windows, and unknown record ids.
+- **PS.1.1 — data protection.** No real protected health information: a unit
+  test asserts the seed uses the reserved `example.test` domain and 555-01xx
+  phone numbers.
+
+**Accepted risks for a course prototype**, documented rather than hidden:
+the release APK is signed with the debug keystore; `SharedPreferences` is
+app-private but not encrypted; and the deep-link activity is necessarily
+exported. Each is analysed in the security review with the fix that a real
+deployment would need.
 
 ## Known issues and limitations
 
@@ -307,7 +335,12 @@ copy, buttons, form labels and status text remain at 16 px or larger.
    Renee).
 6. **Single care recipient.** The caregiver experience assumes one care
    recipient, matching the design; multi-patient support is out of scope.
-7. **Harmless build warning.** `flutter build apk` prints a note about
+7. **Security items accepted for this build** (see the security review):
+   the release APK is signed with the **debug keystore**, so it is fine for
+   side-loading and coursework but is not a store-ready artifact; and local
+   state is stored unencrypted in app-private `SharedPreferences`, which is
+   acceptable only because the data is fictional.
+8. **Harmless build warning.** `flutter build apk` prints a note about
    `CupertinoIcons` fonts because `package:flutter/cupertino.dart` is imported
    for the iOS page transition. No Cupertino icon is used and the APK is
    unaffected.
@@ -328,7 +361,7 @@ copy, buttons, form labels and status text remain at 16 px or larger.
 
 | Member | Week 4 contribution |
 | --- | --- |
-| **Shayne McPherson** (Technical Lead) | Repository migration to the shared team repo and the `dev` branch workflow; full Flutter implementation of all 11 designed screens plus the medication-detail and app-settings screens; Riverpod state, go_router navigation, persistence; 220 unit / widget tests, the integration test, coverage report and CI workflow; the app README, test plan, ADRs 0001 and 0003, and the screenshots. |
+| **Shayne McPherson** (Technical Lead) | Repository migration to the shared team repo and the `dev` branch workflow; full Flutter implementation of all 11 designed screens plus the medication-detail and app-settings screens; Riverpod state, go_router navigation, persistence; 225 unit / widget tests, the integration test, coverage report and CI workflow; the app README, test plan, ADRs 0001 and 0003, and the screenshots. |
 | **Abel Tabor** (Documentation Lead) | Week 3 design system, Figma frames (mobile, landscape, tablet) and the design documentation this implementation follows; created and administers the shared GitHub repository. *(Add Week 4 items here.)* |
 | **Quinton Coleman** (QA / Testing Lead) | Week 3 Figma colour and text style setup, documented in *CareConnect Figma Progress Screenshots*. *(Add Week 4 items here.)* |
 

@@ -6,12 +6,13 @@ import '../models/notification_settings.dart';
 class NotificationSettingsNotifier extends Notifier<NotificationSettings> {
   @override
   NotificationSettings build() {
-    final json = ref
+    return ref
         .watch(localStoreProvider)
-        .readJson(StoreKeys.notifications);
-    return json == null
-        ? const NotificationSettings()
-        : NotificationSettings.fromJson(json);
+        .readAs(
+          StoreKeys.notifications,
+          NotificationSettings.fromJson,
+          orElse: NotificationSettings.new,
+        );
   }
 
   Future<void> setDailyDigest({required bool enabled}) =>

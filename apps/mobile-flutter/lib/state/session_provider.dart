@@ -13,8 +13,9 @@ import 'clock_provider.dart';
 class SessionNotifier extends Notifier<Session?> {
   @override
   Session? build() {
-    final json = ref.watch(localStoreProvider).readJson(StoreKeys.session);
-    return json == null ? null : Session.fromJson(json);
+    return ref
+        .watch(localStoreProvider)
+        .readAs(StoreKeys.session, Session.fromJson, orElse: () => null);
   }
 
   Future<void> signIn({

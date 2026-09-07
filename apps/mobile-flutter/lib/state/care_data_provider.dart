@@ -48,12 +48,14 @@ class CareDataNotifier extends Notifier<CareData> {
       }
     });
 
-    final stored = store.readJson(StoreKeys.careData);
-    final base = stored == null
-        ? MockData.seed(now)
-        : CareData.fromJson(stored);
+    final hadStored = store.contains(StoreKeys.careData);
+    final base = store.readAs(
+      StoreKeys.careData,
+      CareData.fromJson,
+      orElse: () => MockData.seed(now),
+    );
     final data = _withDosesForDay(base, now);
-    if (stored == null || !identical(data, base)) {
+    if (!hadStored || !identical(data, base)) {
       unawaited(store.writeJson(StoreKeys.careData, data.toJson()));
     }
     return data;

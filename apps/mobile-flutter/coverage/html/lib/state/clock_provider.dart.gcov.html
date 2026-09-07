@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-07 00:17:31</td>
+            <td class="headerValue">2026-09-07 00:44:51</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -76,7 +76,7 @@
 <span id="L6"><span class="lineNum">       6</span>              : import 'settings_provider.dart';</span>
 <span id="L7"><span class="lineNum">       7</span>              : </span>
 <span id="L8"><span class="lineNum">       8</span>              : /// The wall clock. Tests override this with a [FixedClock].</span>
-<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">          39 : final clockProvider = Provider&lt;Clock&gt;((ref) =&gt; const SystemClock());</span></span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">          42 : final clockProvider = Provider&lt;Clock&gt;((ref) =&gt; const SystemClock());</span></span>
 <span id="L10"><span class="lineNum">      10</span>              : </span>
 <span id="L11"><span class="lineNum">      11</span>              : /// &quot;Now&quot;, refreshed every 30 seconds so &quot;Due in 20 min&quot; stays honest without</span>
 <span id="L12"><span class="lineNum">      12</span>              : /// rebuilding on every second. When the demo clock setting is on, time is</span>
@@ -84,24 +84,24 @@
 <span id="L14"><span class="lineNum">      14</span>              : class CurrentTime extends Notifier&lt;DateTime&gt; {</span>
 <span id="L15"><span class="lineNum">      15</span>              :   Timer? _ticker;</span>
 <span id="L16"><span class="lineNum">      16</span>              : </span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">          12 :   @override</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">          13 :   @override</span></span>
 <span id="L18"><span class="lineNum">      18</span>              :   DateTime build() {</span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">          72 :     final demo = ref.watch(appSettingsProvider.select((s) =&gt; s.demoClock));</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          36 :     final clock = ref.watch(clockProvider);</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">          78 :     final demo = ref.watch(appSettingsProvider.select((s) =&gt; s.demoClock));</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          39 :     final clock = ref.watch(clockProvider);</span></span>
 <span id="L21"><span class="lineNum">      21</span>              : </span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">          12 :     _ticker?.cancel();</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          50 :     ref.onDispose(() =&gt; _ticker?.cancel());</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">          13 :     _ticker?.cancel();</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          54 :     ref.onDispose(() =&gt; _ticker?.cancel());</span></span>
 <span id="L24"><span class="lineNum">      24</span>              : </span>
 <span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           2 :     if (demo) return kDemoInstant;</span></span>
 <span id="L26"><span class="lineNum">      26</span>              : </span>
 <span id="L27"><span class="lineNum">      27</span>              :     // A fixed clock never changes, so there is nothing to tick — and no timer</span>
 <span id="L28"><span class="lineNum">      28</span>              :     // left pending at the end of a widget test.</span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          12 :     if (clock is! FixedClock) {</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          13 :     if (clock is! FixedClock) {</span></span>
 <span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           4 :       _ticker = Timer.periodic(const Duration(seconds: 30), (_) {</span></span>
 <span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0 :         state = clock.now();</span></span>
 <span id="L32"><span class="lineNum">      32</span>              :       });</span>
 <span id="L33"><span class="lineNum">      33</span>              :     }</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          12 :     return clock.now();</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          13 :     return clock.now();</span></span>
 <span id="L35"><span class="lineNum">      35</span>              :   }</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span>              :   /// Re-reads the clock immediately (used after returning to the app).</span>
@@ -114,7 +114,7 @@
 <span id="L44"><span class="lineNum">      44</span>              :   }</span>
 <span id="L45"><span class="lineNum">      45</span>              : }</span>
 <span id="L46"><span class="lineNum">      46</span>              : </span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          36 : final currentTimeProvider = NotifierProvider&lt;CurrentTime, DateTime&gt;(</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          39 : final currentTimeProvider = NotifierProvider&lt;CurrentTime, DateTime&gt;(</span></span>
 <span id="L48"><span class="lineNum">      48</span>              :   CurrentTime.new,</span>
 <span id="L49"><span class="lineNum">      49</span>              : );</span>
         </pre>

@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">15</td>
-            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntry">21</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-07 00:17:31</td>
+            <td class="headerValue">2026-09-07 00:44:51</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -68,63 +68,90 @@
               <td>
 <pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
-<span id="L1"><span class="lineNum">       1</span>              : import 'dart:convert';</span>
-<span id="L2"><span class="lineNum">       2</span>              : </span>
-<span id="L3"><span class="lineNum">       3</span>              : import 'package:flutter_riverpod/flutter_riverpod.dart';</span>
-<span id="L4"><span class="lineNum">       4</span>              : import 'package:shared_preferences/shared_preferences.dart';</span>
-<span id="L5"><span class="lineNum">       5</span>              : </span>
-<span id="L6"><span class="lineNum">       6</span>              : /// The `SharedPreferences` instance opened in `main()`.</span>
-<span id="L7"><span class="lineNum">       7</span>              : ///</span>
-<span id="L8"><span class="lineNum">       8</span>              : /// Deliberately has no default: forgetting to override it is a programming</span>
-<span id="L9"><span class="lineNum">       9</span>              : /// error that should surface immediately rather than silently losing data.</span>
-<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">          43 : final sharedPreferencesProvider = Provider&lt;SharedPreferences&gt;((ref) {</span></span>
-<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">           1 :   throw UnimplementedError(</span></span>
-<span id="L12"><span class="lineNum">      12</span>              :     'sharedPreferencesProvider must be overridden in ProviderScope',</span>
-<span id="L13"><span class="lineNum">      13</span>              :   );</span>
-<span id="L14"><span class="lineNum">      14</span>              : });</span>
-<span id="L15"><span class="lineNum">      15</span>              : </span>
-<span id="L16"><span class="lineNum">      16</span>              : /// Storage keys, in one place so tests and notifiers cannot drift apart.</span>
-<span id="L17"><span class="lineNum">      17</span>              : abstract final class StoreKeys {</span>
-<span id="L18"><span class="lineNum">      18</span>              :   static const String session = 'cc.session';</span>
-<span id="L19"><span class="lineNum">      19</span>              :   static const String settings = 'cc.settings';</span>
-<span id="L20"><span class="lineNum">      20</span>              :   static const String notifications = 'cc.notifications';</span>
-<span id="L21"><span class="lineNum">      21</span>              :   static const String careData = 'cc.careData';</span>
-<span id="L22"><span class="lineNum">      22</span>              :   static const String medicationDraft = 'cc.draft.medication';</span>
-<span id="L23"><span class="lineNum">      23</span>              :   static const String appointmentDraft = 'cc.draft.appointment';</span>
-<span id="L24"><span class="lineNum">      24</span>              : }</span>
-<span id="L25"><span class="lineNum">      25</span>              : </span>
-<span id="L26"><span class="lineNum">      26</span>              : /// Thin JSON layer over `SharedPreferences`.</span>
-<span id="L27"><span class="lineNum">      27</span>              : ///</span>
-<span id="L28"><span class="lineNum">      28</span>              : /// Every notifier persists through this class, so persistence is one</span>
-<span id="L29"><span class="lineNum">      29</span>              : /// mockable seam: unit tests use `SharedPreferences.setMockInitialValues`.</span>
-<span id="L30"><span class="lineNum">      30</span>              : class LocalStore {</span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">          14 :   LocalStore(this._prefs);</span></span>
-<span id="L32"><span class="lineNum">      32</span>              : </span>
-<span id="L33"><span class="lineNum">      33</span>              :   final SharedPreferences _prefs;</span>
-<span id="L34"><span class="lineNum">      34</span>              : </span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">          14 :   Map&lt;String, dynamic&gt;? readJson(String key) {</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          28 :     final raw = _prefs.getString(key);</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          13 :     if (raw == null || raw.isEmpty) return null;</span></span>
-<span id="L38"><span class="lineNum">      38</span>              :     try {</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          13 :       final decoded = jsonDecode(raw);</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          13 :       return decoded is Map&lt;String, dynamic&gt; ? decoded : null;</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           1 :     } on FormatException {</span></span>
-<span id="L42"><span class="lineNum">      42</span>              :       // Corrupt entry: treat as absent rather than crashing at start-up.</span>
-<span id="L43"><span class="lineNum">      43</span>              :       return null;</span>
-<span id="L44"><span class="lineNum">      44</span>              :     }</span>
-<span id="L45"><span class="lineNum">      45</span>              :   }</span>
-<span id="L46"><span class="lineNum">      46</span>              : </span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          14 :   Future&lt;bool&gt; writeJson(String key, Map&lt;String, dynamic&gt; value) =&gt;</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          42 :       _prefs.setString(key, jsonEncode(value));</span></span>
-<span id="L49"><span class="lineNum">      49</span>              : </span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          24 :   Future&lt;bool&gt; remove(String key) =&gt; _prefs.remove(key);</span></span>
-<span id="L51"><span class="lineNum">      51</span>              : </span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">           3 :   bool contains(String key) =&gt; _prefs.containsKey(key);</span></span>
-<span id="L53"><span class="lineNum">      53</span>              : }</span>
-<span id="L54"><span class="lineNum">      54</span>              : </span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">          42 : final localStoreProvider = Provider&lt;LocalStore&gt;(</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">          56 :   (ref) =&gt; LocalStore(ref.watch(sharedPreferencesProvider)),</span></span>
-<span id="L57"><span class="lineNum">      57</span>              : );</span>
+<span id="L1"><span class="lineNum">       1</span>              : import 'dart:async';</span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'dart:convert';</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : import 'package:flutter_riverpod/flutter_riverpod.dart';</span>
+<span id="L5"><span class="lineNum">       5</span>              : import 'package:shared_preferences/shared_preferences.dart';</span>
+<span id="L6"><span class="lineNum">       6</span>              : </span>
+<span id="L7"><span class="lineNum">       7</span>              : /// The `SharedPreferences` instance opened in `main()`.</span>
+<span id="L8"><span class="lineNum">       8</span>              : ///</span>
+<span id="L9"><span class="lineNum">       9</span>              : /// Deliberately has no default: forgetting to override it is a programming</span>
+<span id="L10"><span class="lineNum">      10</span>              : /// error that should surface immediately rather than silently losing data.</span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">          43 : final sharedPreferencesProvider = Provider&lt;SharedPreferences&gt;((ref) {</span></span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           1 :   throw UnimplementedError(</span></span>
+<span id="L13"><span class="lineNum">      13</span>              :     'sharedPreferencesProvider must be overridden in ProviderScope',</span>
+<span id="L14"><span class="lineNum">      14</span>              :   );</span>
+<span id="L15"><span class="lineNum">      15</span>              : });</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : /// Storage keys, in one place so tests and notifiers cannot drift apart.</span>
+<span id="L18"><span class="lineNum">      18</span>              : abstract final class StoreKeys {</span>
+<span id="L19"><span class="lineNum">      19</span>              :   static const String session = 'cc.session';</span>
+<span id="L20"><span class="lineNum">      20</span>              :   static const String settings = 'cc.settings';</span>
+<span id="L21"><span class="lineNum">      21</span>              :   static const String notifications = 'cc.notifications';</span>
+<span id="L22"><span class="lineNum">      22</span>              :   static const String careData = 'cc.careData';</span>
+<span id="L23"><span class="lineNum">      23</span>              :   static const String medicationDraft = 'cc.draft.medication';</span>
+<span id="L24"><span class="lineNum">      24</span>              :   static const String appointmentDraft = 'cc.draft.appointment';</span>
+<span id="L25"><span class="lineNum">      25</span>              : }</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : /// Thin JSON layer over `SharedPreferences`.</span>
+<span id="L28"><span class="lineNum">      28</span>              : ///</span>
+<span id="L29"><span class="lineNum">      29</span>              : /// Every notifier persists through this class, so persistence is one</span>
+<span id="L30"><span class="lineNum">      30</span>              : /// mockable seam: unit tests use `SharedPreferences.setMockInitialValues`.</span>
+<span id="L31"><span class="lineNum">      31</span>              : class LocalStore {</span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          14 :   LocalStore(this._prefs);</span></span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              :   final SharedPreferences _prefs;</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          14 :   Map&lt;String, dynamic&gt;? readJson(String key) {</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          28 :     final raw = _prefs.getString(key);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          13 :     if (raw == null || raw.isEmpty) return null;</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :     try {</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          13 :       final decoded = jsonDecode(raw);</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          13 :       return decoded is Map&lt;String, dynamic&gt; ? decoded : null;</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           1 :     } on FormatException {</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :       // Corrupt entry: treat as absent rather than crashing at start-up.</span>
+<span id="L44"><span class="lineNum">      44</span>              :       return null;</span>
+<span id="L45"><span class="lineNum">      45</span>              :     }</span>
+<span id="L46"><span class="lineNum">      46</span>              :   }</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              :   /// Reads a stored document and rebuilds it with [fromJson], falling back to</span>
+<span id="L49"><span class="lineNum">      49</span>              :   /// [orElse] if the entry is missing, corrupt, or the wrong shape.</span>
+<span id="L50"><span class="lineNum">      50</span>              :   ///</span>
+<span id="L51"><span class="lineNum">      51</span>              :   /// Deserialisation is the one place untrusted-shaped data crosses into the</span>
+<span id="L52"><span class="lineNum">      52</span>              :   /// domain model: the JSON is valid but its fields may be missing or of the</span>
+<span id="L53"><span class="lineNum">      53</span>              :   /// wrong type (a truncated write, a device-migration artefact, or an edited</span>
+<span id="L54"><span class="lineNum">      54</span>              :   /// preferences file on a rooted device). Letting that throw inside a</span>
+<span id="L55"><span class="lineNum">      55</span>              :   /// provider's `build()` would leave the app unable to start at all, so it</span>
+<span id="L56"><span class="lineNum">      56</span>              :   /// fails closed to a known-good value instead (NIST SSDF PW.5.1 — fail</span>
+<span id="L57"><span class="lineNum">      57</span>              :   /// securely; error handling must not deny service).</span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          14 :   T readAs&lt;T&gt;(</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :     String key,</span>
+<span id="L60"><span class="lineNum">      60</span>              :     T Function(Map&lt;String, dynamic&gt; json) fromJson, {</span>
+<span id="L61"><span class="lineNum">      61</span>              :     required T Function() orElse,</span>
+<span id="L62"><span class="lineNum">      62</span>              :   }) {</span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">          14 :     final json = readJson(key);</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          14 :     if (json == null) return orElse();</span></span>
+<span id="L65"><span class="lineNum">      65</span>              :     try {</span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          13 :       return fromJson(json);</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :     } on Object {</span>
+<span id="L68"><span class="lineNum">      68</span>              :       // Any malformed document is discarded, not partially trusted.</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">           2 :       unawaited(remove(key));</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           1 :       return orElse();</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     }</span>
+<span id="L72"><span class="lineNum">      72</span>              :   }</span>
+<span id="L73"><span class="lineNum">      73</span>              : </span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">          14 :   Future&lt;bool&gt; writeJson(String key, Map&lt;String, dynamic&gt; value) =&gt;</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">          42 :       _prefs.setString(key, jsonEncode(value));</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">          24 :   Future&lt;bool&gt; remove(String key) =&gt; _prefs.remove(key);</span></span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">          36 :   bool contains(String key) =&gt; _prefs.containsKey(key);</span></span>
+<span id="L80"><span class="lineNum">      80</span>              : }</span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">          42 : final localStoreProvider = Provider&lt;LocalStore&gt;(</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">          56 :   (ref) =&gt; LocalStore(ref.watch(sharedPreferencesProvider)),</span></span>
+<span id="L84"><span class="lineNum">      84</span>              : );</span>
         </pre>
               </td>
             </tr>

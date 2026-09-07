@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">17</td>
-            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">18</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-07 00:17:31</td>
+            <td class="headerValue">2026-09-07 00:44:51</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -81,44 +81,45 @@
 <span id="L11"><span class="lineNum">      11</span>              : /// accessible pattern (passkey first, email second, no password) and the role</span>
 <span id="L12"><span class="lineNum">      12</span>              : /// choice that drives the rest of the app.</span>
 <span id="L13"><span class="lineNum">      13</span>              : class SessionNotifier extends Notifier&lt;Session?&gt; {</span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">          12 :   @override</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">          13 :   @override</span></span>
 <span id="L15"><span class="lineNum">      15</span>              :   Session? build() {</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">          48 :     final json = ref.watch(localStoreProvider).readJson(StoreKeys.session);</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">          10 :     return json == null ? null : Session.fromJson(json);</span></span>
-<span id="L18"><span class="lineNum">      18</span>              :   }</span>
-<span id="L19"><span class="lineNum">      19</span>              : </span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">           2 :   Future&lt;void&gt; signIn({</span></span>
-<span id="L21"><span class="lineNum">      21</span>              :     required UserRole role,</span>
-<span id="L22"><span class="lineNum">      22</span>              :     required SignInMethod method,</span>
-<span id="L23"><span class="lineNum">      23</span>              :     String? email,</span>
-<span id="L24"><span class="lineNum">      24</span>              :   }) async {</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           2 :     final session = Session(</span></span>
-<span id="L26"><span class="lineNum">      26</span>              :       role: role,</span>
-<span id="L27"><span class="lineNum">      27</span>              :       method: method,</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           6 :       signedInAt: ref.read(currentTimeProvider),</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           6 :       email: email?.trim().isEmpty ?? true ? null : email!.trim(),</span></span>
-<span id="L30"><span class="lineNum">      30</span>              :     );</span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           2 :     state = session;</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           2 :     await ref</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           4 :         .read(localStoreProvider)</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           4 :         .writeJson(StoreKeys.session, session.toJson());</span></span>
-<span id="L35"><span class="lineNum">      35</span>              :   }</span>
-<span id="L36"><span class="lineNum">      36</span>              : </span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           2 :   Future&lt;void&gt; signOut() async {</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           2 :     state = null;</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           8 :     await ref.read(localStoreProvider).remove(StoreKeys.session);</span></span>
-<span id="L40"><span class="lineNum">      40</span>              :   }</span>
-<span id="L41"><span class="lineNum">      41</span>              : }</span>
-<span id="L42"><span class="lineNum">      42</span>              : </span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          36 : final sessionProvider = NotifierProvider&lt;SessionNotifier, Session?&gt;(</span></span>
-<span id="L44"><span class="lineNum">      44</span>              :   SessionNotifier.new,</span>
-<span id="L45"><span class="lineNum">      45</span>              : );</span>
-<span id="L46"><span class="lineNum">      46</span>              : </span>
-<span id="L47"><span class="lineNum">      47</span>              : /// The signed-in role, defaulting to care recipient before sign-in so the</span>
-<span id="L48"><span class="lineNum">      48</span>              : /// sign-in screen itself is themed in the care-recipient teal.</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          30 : final currentRoleProvider = Provider&lt;UserRole&gt;(</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          40 :   (ref) =&gt; ref.watch(sessionProvider)?.role ?? UserRole.careRecipient,</span></span>
-<span id="L51"><span class="lineNum">      51</span>              : );</span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">          13 :     return ref</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">          26 :         .watch(localStoreProvider)</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">          20 :         .readAs(StoreKeys.session, Session.fromJson, orElse: () =&gt; null);</span></span>
+<span id="L19"><span class="lineNum">      19</span>              :   }</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">           2 :   Future&lt;void&gt; signIn({</span></span>
+<span id="L22"><span class="lineNum">      22</span>              :     required UserRole role,</span>
+<span id="L23"><span class="lineNum">      23</span>              :     required SignInMethod method,</span>
+<span id="L24"><span class="lineNum">      24</span>              :     String? email,</span>
+<span id="L25"><span class="lineNum">      25</span>              :   }) async {</span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           2 :     final session = Session(</span></span>
+<span id="L27"><span class="lineNum">      27</span>              :       role: role,</span>
+<span id="L28"><span class="lineNum">      28</span>              :       method: method,</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           6 :       signedInAt: ref.read(currentTimeProvider),</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           6 :       email: email?.trim().isEmpty ?? true ? null : email!.trim(),</span></span>
+<span id="L31"><span class="lineNum">      31</span>              :     );</span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           2 :     state = session;</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           2 :     await ref</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           4 :         .read(localStoreProvider)</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           4 :         .writeJson(StoreKeys.session, session.toJson());</span></span>
+<span id="L36"><span class="lineNum">      36</span>              :   }</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           2 :   Future&lt;void&gt; signOut() async {</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           2 :     state = null;</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           8 :     await ref.read(localStoreProvider).remove(StoreKeys.session);</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :   }</span>
+<span id="L42"><span class="lineNum">      42</span>              : }</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">          39 : final sessionProvider = NotifierProvider&lt;SessionNotifier, Session?&gt;(</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :   SessionNotifier.new,</span>
+<span id="L46"><span class="lineNum">      46</span>              : );</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : /// The signed-in role, defaulting to care recipient before sign-in so the</span>
+<span id="L49"><span class="lineNum">      49</span>              : /// sign-in screen itself is themed in the care-recipient teal.</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          30 : final currentRoleProvider = Provider&lt;UserRole&gt;(</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          40 :   (ref) =&gt; ref.watch(sessionProvider)?.role ?? UserRole.careRecipient,</span></span>
+<span id="L52"><span class="lineNum">      52</span>              : );</span>
         </pre>
               </td>
             </tr>

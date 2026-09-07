@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +42,32 @@ class LocalStore {
     } on FormatException {
       // Corrupt entry: treat as absent rather than crashing at start-up.
       return null;
+    }
+  }
+
+  /// Reads a stored document and rebuilds it with [fromJson], falling back to
+  /// [orElse] if the entry is missing, corrupt, or the wrong shape.
+  ///
+  /// Deserialisation is the one place untrusted-shaped data crosses into the
+  /// domain model: the JSON is valid but its fields may be missing or of the
+  /// wrong type (a truncated write, a device-migration artefact, or an edited
+  /// preferences file on a rooted device). Letting that throw inside a
+  /// provider's `build()` would leave the app unable to start at all, so it
+  /// fails closed to a known-good value instead (NIST SSDF PW.5.1 — fail
+  /// securely; error handling must not deny service).
+  T readAs<T>(
+    String key,
+    T Function(Map<String, dynamic> json) fromJson, {
+    required T Function() orElse,
+  }) {
+    final json = readJson(key);
+    if (json == null) return orElse();
+    try {
+      return fromJson(json);
+    } on Object {
+      // Any malformed document is discarded, not partially trusted.
+      unawaited(remove(key));
+      return orElse();
     }
   }
 
