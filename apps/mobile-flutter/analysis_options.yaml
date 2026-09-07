@@ -1,0 +1,48 @@
+# Static analysis for the CareConnect Flutter app.
+#
+# `flutter analyze` must report zero issues before a PR is opened (Assignment 4,
+# Code Quality). The rules below extend the recommended Flutter lint set with
+# the stricter checks the team already applies to the TypeScript workspaces.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    unused_import: error
+    unused_local_variable: error
+    dead_code: error
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - macos/**
+
+linter:
+  # `avoid_redundant_argument_values` is deliberately NOT enabled: tests read
+  # better with explicit dates (`DateTime(2026, 9, 1)`) and explicit roles
+  # (`role: UserRole.careRecipient`) even when those match a default.
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - avoid_print
+    - avoid_unused_constructor_parameters
+    - cancel_subscriptions
+    - directives_ordering
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_final_fields
+    - prefer_final_in_for_each
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - sort_pub_dependencies
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_lambdas
+    - unnecessary_parenthesis
+    - use_super_parameters

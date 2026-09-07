@@ -9,6 +9,7 @@ or wherever the team stores them) rather than committing video files.
 
 | Date | Assignment | Presenter | What was shown | Link |
 | --- | --- | --- | --- | --- |
+| | A4 | Shayne | Flutter mobile app: build + test from the repo, features vs. the Week 3 design, coverage report, docs review — script in [week4-video-script.md](week4-video-script.md) | |
 | | A1 | | Repo walkthrough: checkout → build → docs review (10–15 min, required by Assignment 1) | |
 
 ## Mock-user session notes

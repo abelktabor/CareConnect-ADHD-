@@ -79,3 +79,22 @@ Findings go in `docs/demos/` alongside the walkthrough video for that week.
 - One behavior per test; the name states the behavior, not the function name
 - No snapshot tests for anything a human should be reading — snapshots pass while
   the accessible name silently disappears
+
+---
+
+## Flutter mobile app (`apps/mobile-flutter`)
+
+The Flutter app has its own toolchain and its own test pyramid, described in
+full in [`apps/mobile-flutter/docs/TEST-PLAN.md`](../apps/mobile-flutter/docs/TEST-PLAN.md).
+
+| Layer | Tool | Runs | Blocks a PR? |
+| --- | --- | --- | --- |
+| Static analysis | `flutter analyze --fatal-infos` + `dart format` | Every PR | ✅ Yes |
+| Unit | `flutter test test/unit` | Every PR | ✅ Yes |
+| Widget (incl. a11y guidelines) | `flutter test test/widget` | Every PR | ✅ Yes |
+| Coverage gate | `flutter test --coverage` + lcov, **≥ 60 %** | Every PR | ✅ Yes |
+| Integration | `flutter test integration_test -d <device>` | On demand / before demo | ❌ No |
+| Manual a11y | TalkBack / VoiceOver, 200 % text, reduce motion | Every UI PR | ✅ Reviewer sign-off |
+
+Workflow: `.github/workflows/flutter.yml`. The HTML coverage report is committed
+under `apps/mobile-flutter/coverage/html/` because Assignment 4 requires it.

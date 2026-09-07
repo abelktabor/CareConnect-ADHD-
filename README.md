@@ -4,6 +4,7 @@
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-build-646CFF?logo=vite&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-stable-02569B?logo=flutter&logoColor=white)
 ![WCAG 2.2 AA](https://img.shields.io/badge/WCAG-2.2%20AA-success)
 ![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8)
 
@@ -54,7 +55,9 @@ decision making, and conflict resolution.
 | **[Setup](docs/SETUP.md)** | Install, run, scripts, Windows notes |
 | **[Testing](docs/TESTING.md)** | Test layers, gates, and the manual accessibility pass |
 | **[Data Model](docs/DATA-MODEL.md)** | Mock schema for patients, caregivers, medications, appointments, tasks |
-| **[Decisions (ADRs)](docs/decisions/)** | 0001 mobile framework · 0002 desktop OS — both open |
+| **[Flutter mobile app](apps/mobile-flutter/README.md)** | Assignment 4 — architecture, how to run, how to test, coverage report, known issues, contributions, AI usage |
+| **[Flutter test plan](apps/mobile-flutter/docs/TEST-PLAN.md)** | Strategy, full test-case catalogue, manual accessibility pass, coverage floor |
+| **[Decisions (ADRs)](docs/decisions/)** | 0001 mobile framework (accepted: Flutter for A3–4) · 0002 desktop OS (open) · 0003 repository home and `dev` branch (accepted) |
 | **[Contributing](CONTRIBUTING.md)** | Branch naming, PR flow, team norms |
 | **[Reference App README](docs/reference-app-readme.md)** | Archived upstream README with the screen-by-screen walkthrough |
 
@@ -77,23 +80,25 @@ pull request so the repository does not drift from the submission.
 
 ## Current state
 
-The repository currently holds **one application**: the responsive React + Vite web app
-at the root. It began as an accessibility reference implementation (see
-[Attribution](#attribution)) built around care recipients with short-term memory loss,
-and the team is adapting it to the ADHD user group described above. Many of its core
-patterns — single next action, always-visible status, universal undo, plain-language
-dates — carry over directly, because they address overlapping executive-function needs.
+The repository holds **two applications**:
 
-The Flutter, React Native, and Electron applications arrive in Assignments 3–8. The
-repository stays flat until then; the `apps/` split is planned and specified in the
-[build plan](docs/build-plan.md#5-deferred-the-apps-monorepo-migration).
+- the responsive React + Vite web app at `apps/web`, adapted from the
+  accessibility reference implementation (see [Attribution](#attribution)); and
+- the **Flutter mobile app at `apps/mobile-flutter`** (Assignment 4), which
+  implements the Week 3 Figma design — eleven screens for care recipients and
+  caregivers, phone / landscape / tablet layouts, Riverpod state, go_router
+  navigation, local persistence, and a full test suite with an HTML coverage
+  report. See its [README](apps/mobile-flutter/README.md).
+
+Both target the ADHD user group described above. The React Native and
+Electron applications arrive in Assignments 5–8.
 
 ### Platform plan
 
 | Platform | Technology | Target | Assignments |
 | --- | --- | --- | --- |
 | Web | React 18 + Vite + TypeScript | Responsive, installable PWA | 1, 10 |
-| Mobile | Flutter | Android + iOS | 3, 4 |
+| Mobile | Flutter (`apps/mobile-flutter`) ✅ | Android + iOS | 3, 4 |
 | Mobile | React Native + Expo | Android + iOS | 5, 6 |
 | Desktop | Electron | **Windows and macOS** | 7, 8, 9 |
 
@@ -122,7 +127,7 @@ The full toolchain audit, including what is **not** yet installed, is in
 ### Clone and run
 
 ```bash
-git clone https://github.com/shaynemcp/careconnect-swen661-reference.git careconnect-adhd
+git clone https://github.com/abelktabor/CareConnect-ADHD-.git careconnect-adhd
 ```
 
 ```bash
@@ -131,6 +136,21 @@ cd careconnect-adhd && nvm use && npm install && cp .env.example .env && npm run
 
 The dev server starts at **http://localhost:5173**. One install at the repo root
 covers every workspace. Full detail in [docs/SETUP.md](docs/SETUP.md).
+
+### Run the Flutter mobile app
+
+The Flutter app is a standalone Dart project (not an npm workspace):
+
+```bash
+cd apps/mobile-flutter && flutter pub get && flutter run
+```
+
+```bash
+cd apps/mobile-flutter && flutter test --coverage && genhtml coverage/lcov.info -o coverage/html
+```
+
+Prerequisites, emulator setup, deep links and the release build are in
+[apps/mobile-flutter/README.md](apps/mobile-flutter/README.md).
 
 > The app runs entirely on mock `localStorage` data — **no backend keys are required**.
 > If `ANTHROPIC_API_KEY` is absent, the landing-page assistant falls back to a scripted
@@ -159,6 +179,9 @@ Copy `.env.example` to `.env` and fill in only what you need:
 | `npm run typecheck` | `tsc --noEmit` (strict) across workspaces |
 | `npm test` | Tests across workspaces |
 | `npm run check:contrast -w @careconnect/design-tokens` | Verify every color pair against WCAG 2.2 AA |
+| `cd apps/mobile-flutter && flutter analyze` | Static analysis for the Flutter app (zero issues required) |
+| `cd apps/mobile-flutter && flutter test --coverage` | Flutter unit + widget tests with coverage |
+| `cd apps/mobile-flutter && flutter build apk --release` | Android release APK |
 
 > **Note:** Jest and Playwright are **not yet configured**, so `npm test` is currently a
 > no-op and the CI coverage gate is inactive. See [docs/TESTING.md](docs/TESTING.md).
@@ -172,14 +195,14 @@ npm workspaces monorepo. Full rationale in [docs/ARCHITECTURE.md](docs/ARCHITECT
 ```
 careconnect/
 ├── .github/
-│   ├── workflows/               # CI, nightly E2E
+│   ├── workflows/               # CI (web), Flutter analyze/test/APK, nightly E2E
 │   ├── ISSUE_TEMPLATE/          # Bug, feature/task, accessibility issue
 │   ├── PULL_REQUEST_TEMPLATE.md # Includes the mandatory accessibility checklist
 │   ├── CODEOWNERS
 │   └── dependabot.yml
 ├── apps/
 │   ├── web/                     # React 18 + Vite + TS (strict) + Tailwind, PWA
-│   ├── mobile/                  # ⚠️ placeholder — framework undecided (ADR 0001)
+│   ├── mobile-flutter/          # Flutter — Riverpod + go_router (Assignment 4)
 │   └── desktop/                 # Electron shell over the web build (ADR 0002)
 ├── packages/
 │   ├── ui/                      # Shared accessible components
@@ -191,7 +214,7 @@ careconnect/
 │   ├── SETUP.md
 │   ├── TESTING.md
 │   ├── DATA-MODEL.md
-│   ├── decisions/               # ADRs — 0001 mobile framework, 0002 desktop OS
+│   ├── decisions/               # ADRs — 0001 mobile framework, 0002 desktop OS, 0003 repo home
 │   └── demos/                   # Dated log of weekly walkthrough videos
 ├── .nvmrc                       # Node 22.14.0
 ├── .editorconfig                # LF endings across macOS + Windows machines
@@ -202,12 +225,13 @@ careconnect/
 
 ## Contributing
 
-`main` is protected — all work arrives through pull requests.
+All work arrives through pull requests into the **`dev`** integration branch;
+`main` holds submitted milestones (see [ADR 0003](docs/decisions/0003-repository-home.md)).
 
-1. Branch from `main` using the charter convention:
+1. Branch from `dev` using the charter convention:
    **`<name>/<short-feature-description>`** — e.g. `shayne/patient-medications`
 2. Commit **at least once per work session** — no single giant end-of-week commits
-3. Open a PR into `main` and complete the template, **including the accessibility checklist**
+3. Open a PR into `dev` and complete the template, **including the accessibility checklist**
 4. Get at least one review from another team member; CI must be green
 5. **Squash-merge** after approval
 
@@ -217,6 +241,29 @@ Work is complete only when it is **merged** via a reviewed PR, **tested**, **che
 accessibility** (WCAG 2.2 AA), **documented**, and **demoed** to the team.
 
 Full process detail is in the [team charter](docs/team-charter.md#4-git-workflow).
+
+---
+
+## Assignment 4 — Flutter mobile implementation
+
+**Project description.** `apps/mobile-flutter` turns the Week 3 Figma design
+into a working Flutter app: sign-in with role choice, Today with one dominant
+next action and a 10-second undo, medications and appointments with
+icon-plus-text status, three-step and two-step management forms with autosave,
+notifications and caregiver-access settings, and the caregiver dashboard,
+manage tab and activity timeline — with phone, landscape and tablet layouts.
+
+| Requirement | Where |
+| --- | --- |
+| How to run the app | [apps/mobile-flutter/README.md → How to run](apps/mobile-flutter/README.md#how-to-run-the-app) |
+| How to run tests | [apps/mobile-flutter/README.md → How to run the tests](apps/mobile-flutter/README.md#how-to-run-the-tests) · [Test plan](apps/mobile-flutter/docs/TEST-PLAN.md) |
+| Test coverage report | [apps/mobile-flutter/coverage/html/index.html](apps/mobile-flutter/coverage/html/index.html) · [summary](apps/mobile-flutter/coverage/summary.txt) · [screenshot](docs/screenshots/mobile-flutter/coverage.png) |
+| Known issues / limitations | [apps/mobile-flutter/README.md → Known issues](apps/mobile-flutter/README.md#known-issues-and-limitations) |
+| Team member contributions this week | [apps/mobile-flutter/README.md → Team contributions](apps/mobile-flutter/README.md#team-contributions-this-week) |
+| AI usage summary | [apps/mobile-flutter/README.md → AI usage](apps/mobile-flutter/README.md#ai-usage-summary) |
+| Screenshots | [docs/screenshots/mobile-flutter/](docs/screenshots/mobile-flutter/) |
+| Build artifact | `flutter build apk --release` → `build/app/outputs/flutter-apk/app-release.apk` (also attached to the GitHub release for the submission) |
+| Demo video script | [docs/demos/week4-video-script.md](docs/demos/week4-video-script.md) |
 
 ---
 

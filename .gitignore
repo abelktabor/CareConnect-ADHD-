@@ -160,3 +160,12 @@ detox/artifacts/
 # Local agent / tool config that should not travel with the repo
 # ─────────────────────────────────────────────────────────────────────────────
 .claude/
+
+# Assignment 4 requires the Flutter coverage folder (lcov + HTML report) to be
+# committed, and the Gradle wrapper must ship with the app for CI builds.
+!apps/mobile-flutter/coverage/
+!apps/mobile-flutter/coverage/lcov.info
+!apps/mobile-flutter/coverage/html/
+!apps/mobile-flutter/coverage/html/**
+!apps/mobile-flutter/android/gradlew
+!apps/mobile-flutter/android/gradlew.bat

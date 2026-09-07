@@ -1,6 +1,6 @@
 # ADR 0001 — Mobile framework
 
-**Status:** 🟡 **OPEN — not decided.** Do not resolve this without the team.
+**Status:** ✅ **Accepted — 2026-09-05.** Flutter for Assignments 3–4 at `apps/mobile-flutter`; React Native + Expo for Assignments 5–6 at `apps/mobile-react-native`. The course sequence requires both, so this is "how to hold both", not either/or.
 **Date raised:** August 18, 2026
 **Deciders:** Team E-Echo (Shayne McPherson, Abel Tabor, Quinton Coleman)
 
@@ -52,8 +52,14 @@ required.
 
 ## Decision
 
-**Not yet made.** Confirm with the instructor whether both mobile frameworks are
-required before committing to a structure.
+**Both.** The team meeting of 2026-09-05 confirmed Week 4 implements the Week 3
+design in Flutter. The Flutter app lives at `apps/mobile-flutter` as a
+standalone Dart project outside the npm workspaces (ADR 0003 covers the
+repository move). The domain types are mirrored by hand in
+`apps/mobile-flutter/lib/models` and the design tokens in
+`lib/core/theme/app_colors.dart`, each with a test that re-verifies contrast so
+the two sources of truth cannot drift silently. React Native follows in
+Assignment 5 and joins the workspaces.
 
 ## Consequences of deferring
 
@@ -64,8 +70,7 @@ directly and Option B would need to mirror.
 
 ## Follow-up
 
-- [ ] Confirm with the instructor whether Assignments 3–4 (Flutter) and 5–6
-      (React Native) both require a delivered app
-- [ ] If both: rename to `apps/mobile-flutter` and `apps/mobile-react-native`
-- [ ] If one: scaffold it in `apps/mobile` and add to `workspaces` if it is Expo
-- [ ] Update `docs/ARCHITECTURE.md` and the root README platform table either way
+- [x] Assignments 3–4 (Flutter) and 5–6 (React Native) both deliver an app
+- [x] `apps/mobile-flutter` scaffolded (Assignment 4); `apps/mobile` placeholder removed
+- [ ] `apps/mobile-react-native` (Expo) — Assignment 5, add to `workspaces`
+- [x] Root README platform table updated; `docs/ARCHITECTURE.md` to follow with the RN app
