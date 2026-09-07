@@ -1,0 +1,14 @@
+gradle-wrapper.jar
+/.gradle
+/captures/
+# The Gradle wrapper ships with the repo so CI and teammates build the same
+# way without a local Gradle install.
+/local.properties
+GeneratedPluginRegistrant.java
+.cxx/
+
+# Remember to never publicly share your keystore.
+# See https://flutter.dev/to/reference-keystore
+key.properties
+**/*.keystore
+**/*.jks
