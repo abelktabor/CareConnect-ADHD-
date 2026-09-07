@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22.14.0'
+
+jobs:
+  quality:
+    name: Lint · Typecheck · Test · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck (strict)
+        run: npm run typecheck
+
+      - name: Verify design-token contrast against WCAG 2.2 AA
+        run: npm run check:contrast -w @careconnect/design-tokens
+
+      # Coverage gate (60-75%) turns on with Jest - tracked in docs/TESTING.md.
+      # --if-present keeps this green until then rather than failing on a
+      # missing script.
+      - name: Test
+        run: npm test --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/dist
+          retention-days: 7
+
+  accessibility:
+    name: Accessibility (axe + Lighthouse)
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build web
+        run: npm run build:web
+
+      - name: Serve the build
+        run: npx --yes serve apps/web/dist -l 4173 &
+
+      - name: Wait for the server
+        run: npx --yes wait-on http://localhost:4173 --timeout 60000
+
+      # @axe-core/cli bundles a ChromeDriver pinned to a specific Chrome major
+      # version, which drifts from whatever the runner image ships. Install a
+      # matched Chrome + ChromeDriver pair first, otherwise the scan dies with
+      # "session not created" before it evaluates a single rule.
+      - name: Install matched Chrome + ChromeDriver
+        run: npx --yes browser-driver-manager install chrome
+
+      # Fails the build on critical/serious violations only. Moderate and minor
+      # are reported for triage but do not block - see docs/TESTING.md.
+      - name: axe-core scan
+        run: npx --yes @axe-core/cli http://localhost:4173 --exit --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa
+
+      - name: Lighthouse CI (accessibility budget)
+        run: npx --yes @lhci/cli@latest autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # Playwright is deliberately OFF the PR-blocking path: it is the slowest and
+  # flakiest layer, and a red build that means nothing trains people to ignore
+  # red builds. This job runs only when a PR carries the "run-e2e" label; the
+  # scheduled run lives in nightly-e2e.yml.
+  e2e:
+    name: End-to-end (Playwright)
+    if: contains(github.event.pull_request.labels.*.name, 'run-e2e')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Run E2E
+        run: npm run test:e2e --if-present

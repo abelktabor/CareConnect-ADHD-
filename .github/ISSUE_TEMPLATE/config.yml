@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Team charter — process questions
+    url: https://github.com/shaynemcp/careconnect-swen661-reference/blob/main/docs/team-charter.md
+    about: Roles, git workflow, review expectations, and conflict resolution.
+  - name: Build plan — what is coming next
+    url: https://github.com/shaynemcp/careconnect-swen661-reference/blob/main/docs/build-plan.md
+    about: How the repository grows across assignments 1-10.

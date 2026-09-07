@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "editorconfig.editorconfig",
+    "msjsdiag.vscode-react-native",
+    "deque-systems.vscode-axe-linter",
+    "ms-playwright.playwright",
+    "github.vscode-github-actions"
+  ]
+}

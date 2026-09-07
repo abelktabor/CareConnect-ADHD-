@@ -1,3 +1,19 @@
+# CareConnect — .gitignore
+#
+# The repository is currently flat: the React + Vite web application lives at the root.
+# When the apps/ monorepo split happens at Assignment 3 (see docs/build-plan.md §5),
+# each labeled section below moves into its own per-app .gitignore file.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Shared — applies to every platform
+# ─────────────────────────────────────────────────────────────────────────────
+.DS_Store
+*.swp
+*.sw?
+Thumbs.db
+desktop.ini
+
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -6,24 +22,141 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea
-.DS_Store
+# Editors
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 
 # Environment variables — NEVER commit real secrets.
 # Ignore every env file, but keep the placeholder example tracked.
 .env
 .env.*
 !.env.example
+
+# Local tooling caches
+.cache/
+.turbo/
+*.local
+
+# ─────────────────────────────────────────────────────────────────────────────
+# React + Vite (web) — Assignments 1, 10
+# ─────────────────────────────────────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+.eslintcache
+.vercel
+.netlify
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Flutter / Dart (mobile) — Assignments 3, 4
+# ─────────────────────────────────────────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.dart_tool
+.metadata
+pubspec.lock.bak
+doc/api/
+coverage/lcov.info
+
+# Flutter — generated platform folders keep their config but not their build output
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/android/.gradle/
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/key.properties
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+*.jks
+*.keystore
+
+# ─────────────────────────────────────────────────────────────────────────────
+# React Native + Expo (mobile) — Assignments 5, 6
+# ─────────────────────────────────────────────────────────────────────────────
+.expo/
+.expo-shared/
+web-build/
+*.jsbundle
+android/app/build/
+ios/Pods/
+ios/build/
+ios/*.xcworkspace
+!ios/*.xcodeproj/project.pbxproj
+*.hprof
+.metro-health-check*
+metro.config.js.bak
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Electron (desktop — Windows + macOS targets) — Assignments 7, 8, 9
+# ─────────────────────────────────────────────────────────────────────────────
+out/
+release/
+release-builds/
+app/dist/
+*.dmg
+*.pkg
+*.app
+*.asar
+*.zip
+*.exe
+*.deb
+*.rpm
+*.AppImage
+electron-builder.env
+
+# Code-signing material (macOS + Windows) — never commit
+*.p12
+*.mobileprovision
+*.provisionprofile
+.notarize.json
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Testing and coverage
+# ─────────────────────────────────────────────────────────────────────────────
+coverage/
+*.lcov
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+blob-report/
+.maestro/
+detox/artifacts/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Local agent / tool config that should not travel with the repo
+# ─────────────────────────────────────────────────────────────────────────────
+.claude/
