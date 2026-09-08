@@ -1,0 +1,84 @@
+name: Bug report
+description: Something behaves incorrectly
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing this. Per the team charter, the QA / Testing Lead reproduces
+        and triages every bug before it is assigned.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you observe?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Web (React + Vite)
+        - Mobile — Flutter
+        - Mobile — React Native
+        - Desktop — Electron (macOS)
+        - Tooling / CI
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Blocker — blocks an assignment deliverable
+        - High — core flow is broken
+        - Medium — works, but incorrectly
+        - Low — cosmetic
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: a11y
+    attributes:
+      label: Accessibility impact
+      options:
+        - label: This bug affects keyboard, screen reader, contrast, or another WCAG criterion
+        - label: This bug blocks a user of assistive technology from completing a task
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - OS:
+        - Browser / device:
+        - Assistive technology (if any):
+        - Branch / commit:
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots, console output, or other context

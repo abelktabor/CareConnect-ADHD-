@@ -1,0 +1,70 @@
+name: Accessibility issue
+description: A WCAG conformance failure or an assistive-technology barrier
+title: "[A11y]: "
+labels: ["accessibility", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        WCAG 2.2 Level AA conformance is a merge requirement for this project, not a
+        later cleanup pass. Accessibility issues are triaged ahead of feature work.
+
+  - type: textarea
+    id: barrier
+    attributes:
+      label: What is the barrier?
+      description: What can a user not do, and with which assistive technology?
+    validations:
+      required: true
+
+  - type: input
+    id: criterion
+    attributes:
+      label: WCAG success criterion
+      placeholder: "1.4.3 Contrast (Minimum) — Level AA"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Keyboard operability
+        - Screen reader / semantics
+        - Contrast / color
+        - Target size
+        - Reflow / zoom
+        - Motion / animation
+        - Forms / error handling
+        - Cognitive load
+    validations:
+      required: true
+
+  - type: dropdown
+    id: assistive-tech
+    attributes:
+      label: How was this found?
+      options:
+        - VoiceOver (macOS / iOS)
+        - TalkBack (Android)
+        - NVDA (Windows)
+        - Keyboard-only testing
+        - axe DevTools
+        - WAVE
+        - Manual inspection
+    validations:
+      required: true
+
+  - type: textarea
+    id: where
+    attributes:
+      label: Where does it occur?
+      description: Screen, component, and platform.
+    validations:
+      required: true
+
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Suggested remediation

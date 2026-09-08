@@ -1,0 +1,33 @@
+name: careconnect_mobile
+description: >-
+  CareConnect mobile — medication and appointment support for adults with ADHD
+  and their caregivers. SWEN 661 (UMGC, Fall 2026), Team E-Echo, Assignment 4.
+publish_to: 'none'
+
+# Assignment 4 build. The build number is bumped with each course submission.
+version: 0.4.0+4
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # State management (Assignment 4 requires Provider or Riverpod).
+  flutter_riverpod: ^3.4.3
+  # Declarative routing on Navigator 2.0 with deep-link support.
+  go_router: ^18.0.1
+  # Full-word date formatting ("Tuesday, August 25", never "8/25").
+  intl: ^0.20.3
+  # Local persistence for session, settings, care data and form drafts.
+  shared_preferences: ^2.5.5
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

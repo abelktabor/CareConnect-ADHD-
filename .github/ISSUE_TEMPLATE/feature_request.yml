@@ -1,0 +1,74 @@
+name: Feature / requirement
+description: A new capability, or a requirement from the proposal
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for features from `docs/project-proposal.md` and for requirements
+        produced in Assignment 2.
+
+  - type: input
+    id: feature-id
+    attributes:
+      label: Proposal feature ID
+      description: "The F-number from docs/project-proposal.md §3, if this maps to one (e.g. F3)."
+      placeholder: F3
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What should this do?
+      description: Describe the capability from the user's point of view.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it matter for our users?
+      description: Which ADHD-specific failure mode does this address — task initiation, working memory, time blindness, mistake anxiety, rejection sensitivity?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Testable conditions. This is what "done" means in review.
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Must-Have
+        - Should-Have
+        - Nice-to-Have
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Platforms affected
+      options:
+        - label: Web (React + Vite)
+        - label: Mobile — Flutter
+        - label: Mobile — React Native
+        - label: Desktop — Electron (macOS)
+
+  - type: textarea
+    id: a11y
+    attributes:
+      label: Accessibility requirements
+      description: Which WCAG 2.2 AA criteria apply, and what must be true for this to conform?
+    validations:
+      required: true

@@ -1,0 +1,27 @@
+{
+  "name": "careconnect",
+  "private": true,
+  "version": "0.1.0",
+  "description": "CareConnect \u2014 care-coordination app for patients with ADHD and their caregivers (SWEN 661, Team E-Echo)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.14.0",
+    "npm": ">=10"
+  },
+  "workspaces": [
+    "apps/web",
+    "apps/desktop",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace @careconnect/web",
+    "dev:mobile": "npm run start --workspace @careconnect/mobile",
+    "dev:desktop": "npm run start --workspace @careconnect/desktop",
+    "build": "npm run build --workspaces --if-present",
+    "build:web": "npm run build --workspace @careconnect/web",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "a11y:axe": "npm run a11y:axe --workspace @careconnect/web"
+  }
+}

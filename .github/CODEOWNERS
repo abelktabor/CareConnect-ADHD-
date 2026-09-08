@@ -1,0 +1,35 @@
+# CareConnect — code ownership
+#
+# The Technical Lead is the required reviewer for shared code, build configuration,
+# and repository structure (see docs/team-charter.md §4). Update the usernames at each
+# two-week rotation boundary.
+
+# Default owner for everything not matched below
+*                       @shaynemcp
+
+# Repository structure, CI, and tooling — Technical Lead
+/.github/               @shaynemcp
+/package.json           @shaynemcp
+/packages/              @shaynemcp
+/package-lock.json      @shaynemcp
+/apps/web/vite.config.ts  @shaynemcp
+/apps/web/tsconfig*.json  @shaynemcp
+/apps/web/eslint.config.js @shaynemcp
+
+# Shared types and domain model
+/packages/mock-data/    @shaynemcp
+/packages/design-tokens/ @shaynemcp
+
+# Accessibility conformance — QA / Testing Lead (Weeks 1-2: Quinton)
+/docs/ACCESSIBILITY.md  @shaynemcp
+
+# Course deliverables — Documentation Lead (Weeks 1-2: Abel)
+/docs/                  @shaynemcp
+/README.md              @shaynemcp
+
+# Rotate these owners at each two-week boundary per docs/team-charter.md §3.
+# Weeks 1-2 — Technical Lead: @shaynemcp · QA Lead: @colemaninternational80-cmyk ·
+# Documentation Lead: @abelktabor
+#
+# Once Abel and Quinton are added as collaborators, widen the shared-code owners:
+#   /src/types/   @shaynemcp @abelktabor @colemaninternational80-cmyk
