@@ -59,7 +59,7 @@ jobs:
         run: genhtml coverage/lcov.info -o coverage/html --title "CareConnect mobile" --quiet
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: flutter-coverage-html
           path: apps/mobile-flutter/coverage/html
@@ -89,7 +89,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: careconnect-mobile-release-apk
           path: apps/mobile-flutter/build/app/outputs/flutter-apk/app-release.apk
