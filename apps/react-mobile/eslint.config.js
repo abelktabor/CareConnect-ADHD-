@@ -66,5 +66,10 @@ module.exports = tseslint.config(
         ...globals.jest,
       },
     },
+    rules: {
+      // These are plain CommonJS files by necessity (the flat config format
+      // itself, and Jest config/setup loaded outside the TS/ESM pipeline).
+      '@typescript-eslint/no-require-imports': 'off',
+    },
   },
 );
