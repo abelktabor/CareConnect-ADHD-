@@ -169,3 +169,8 @@ detox/artifacts/
 !apps/mobile-flutter/coverage/html/**
 !apps/mobile-flutter/android/gradlew
 !apps/mobile-flutter/android/gradlew.bat
+
+# Same requirement for the React Native / Expo port: commit the Jest coverage
+# report (lcov + HTML) so the 60%+ thresholds are visible without re-running tests.
+!apps/react-mobile/coverage/
+!apps/react-mobile/coverage/**
