@@ -1,4 +1,10 @@
 // @ts-check
+//
+// Pinned to ESLint 8.x (see package.json) rather than 9.x: eslint-plugin-
+// react-native@4.1.0's peerDependencies only go up to ^8, and there is no
+// newer release that supports ESLint 9. 8.57+ still understands this flat
+// config format natively, so nothing here needs to change if that plugin
+// is ever dropped in favour of ESLint 9.
 const js = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const react = require('eslint-plugin-react');
@@ -48,6 +54,17 @@ module.exports = tseslint.config(
     files: ['**/*.test.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    // Plain CommonJS config/setup files (not covered by the ts/tsx block
+    // above) run under Node and, for the Jest setup files, inside Jest.
+    files: ['eslint.config.js', 'jest.config.js', 'jest.setup.js', 'jest.setup.after-env.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
     },
   },
 );

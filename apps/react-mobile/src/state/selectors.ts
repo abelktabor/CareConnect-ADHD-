@@ -34,7 +34,8 @@ export function useCaregiver() {
 }
 
 export function useActiveMedications(): Medication[] {
-  return useCareDataStore((s) => activeMedications(s.data));
+  const data = useCareDataStore((s) => s.data);
+  return activeMedications(data);
 }
 
 export function useMedicationById(id: string): Medication | undefined {

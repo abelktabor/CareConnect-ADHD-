@@ -51,6 +51,11 @@ interface DraftState {
   clearAppointmentDraft: () => Promise<void>;
 }
 
+// NOTE: guard these with `!= null`, never plain truthiness — a timer handle
+// of `0` is a real, pending timer (it happens whenever one of these is the
+// very first setTimeout created against a fresh clock, which is exactly
+// what Jest's fake timers do between tests), and `if (debounce)` would skip
+// cancelling it, letting a stale debounced save fire alongside the new one.
 let medicationDebounce: ReturnType<typeof setTimeout> | null = null;
 let appointmentDebounce: ReturnType<typeof setTimeout> | null = null;
 
@@ -76,7 +81,7 @@ export const useDraftStore = create<DraftState>((set, get) => {
 
     updateMedicationDraft: (change) => {
       set((state) => ({ medicationDraft: change(state.medicationDraft), medicationAutosave: 'saving' }));
-      if (medicationDebounce) clearTimeout(medicationDebounce);
+      if (medicationDebounce != null) clearTimeout(medicationDebounce);
       medicationDebounce = setTimeout(() => {
         void saveMedicationDraft();
       }, AUTOSAVE_DEBOUNCE_MS);
@@ -90,7 +95,7 @@ export const useDraftStore = create<DraftState>((set, get) => {
 
     startEditingMedicationDraft: async (medication) => {
       if (get().medicationDraft.editingId === medication.id) return;
-      if (medicationDebounce) clearTimeout(medicationDebounce);
+      if (medicationDebounce != null) clearTimeout(medicationDebounce);
       set({
         medicationDraft: {
           editingId: medication.id,
@@ -112,7 +117,7 @@ export const useDraftStore = create<DraftState>((set, get) => {
     },
 
     clearMedicationDraft: async () => {
-      if (medicationDebounce) clearTimeout(medicationDebounce);
+      if (medicationDebounce != null) clearTimeout(medicationDebounce);
       medicationDebounce = null;
       set({ medicationDraft: emptyMedicationDraft(), medicationAutosave: 'idle' });
       await remove(StoreKeys.medicationDraft);
@@ -123,7 +128,7 @@ export const useDraftStore = create<DraftState>((set, get) => {
         appointmentDraft: change(state.appointmentDraft),
         appointmentAutosave: 'saving',
       }));
-      if (appointmentDebounce) clearTimeout(appointmentDebounce);
+      if (appointmentDebounce != null) clearTimeout(appointmentDebounce);
       appointmentDebounce = setTimeout(() => {
         void saveAppointmentDraft();
       }, AUTOSAVE_DEBOUNCE_MS);
@@ -137,7 +142,7 @@ export const useDraftStore = create<DraftState>((set, get) => {
 
     startEditingAppointmentDraft: async (appointment) => {
       if (get().appointmentDraft.editingId === appointment.id) return;
-      if (appointmentDebounce) clearTimeout(appointmentDebounce);
+      if (appointmentDebounce != null) clearTimeout(appointmentDebounce);
       set({
         appointmentDraft: {
           editingId: appointment.id,
@@ -159,7 +164,7 @@ export const useDraftStore = create<DraftState>((set, get) => {
     },
 
     clearAppointmentDraft: async () => {
-      if (appointmentDebounce) clearTimeout(appointmentDebounce);
+      if (appointmentDebounce != null) clearTimeout(appointmentDebounce);
       appointmentDebounce = null;
       set({ appointmentDraft: emptyAppointmentDraft(), appointmentAutosave: 'idle' });
       await remove(StoreKeys.appointmentDraft);

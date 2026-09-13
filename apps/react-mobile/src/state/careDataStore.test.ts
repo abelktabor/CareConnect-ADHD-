@@ -109,8 +109,13 @@ describe('updateMedication', () => {
     const data = useCareDataStore.getState().data;
     const lisinoprilDoses = data.doseEvents.filter((d) => d.medicationId === 'med-lisinopril');
 
-    // The old 18:00 due dose is gone...
-    expect(lisinoprilDoses.some((d) => d.scheduledFor.getHours() === 18)).toBe(false);
+    // The old 18:00 due dose is gone... (scoped to status 'due': yesterday's
+    // 18:00 dose is also hour 18, but it's already 'taken' history and must
+    // stay, so a bare `.getHours() === 18` check would pass even if today's
+    // due dose were never removed.)
+    expect(
+      lisinoprilDoses.some((d) => d.status === 'due' && d.scheduledFor.getHours() === 18),
+    ).toBe(false);
     // ...but the already-taken 8:00 dose is history and stays.
     expect(lisinoprilDoses.some((d) => d.status === 'taken' && d.scheduledFor.getHours() === 8)).toBe(
       true,

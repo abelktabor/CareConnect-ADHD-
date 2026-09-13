@@ -43,7 +43,6 @@ describe('medication draft autosave', () => {
 
     expect(setSpy).toHaveBeenCalledTimes(1);
     expect(useDraftStore.getState().medicationDraft.name).toBe('Ibu');
-    setSpy.mockRestore();
   });
 
   it('flush writes immediately without waiting for the debounce', async () => {

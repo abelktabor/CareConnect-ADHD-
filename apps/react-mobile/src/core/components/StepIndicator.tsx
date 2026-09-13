@@ -38,6 +38,7 @@ export function StepIndicator({ step, totalSteps, title, subtitle }: StepIndicat
       ) : null}
       <View
         style={[styles.track, { backgroundColor: theme.colors.border }]}
+        accessible
         accessibilityRole="progressbar"
         accessibilityValue={{ min: 0, max: totalSteps, now: step }}
       >

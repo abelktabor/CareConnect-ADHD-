@@ -54,7 +54,15 @@ describe('AlertCard', () => {
 
 describe('ChoiceGroup', () => {
   it('exposes a radiogroup of radio items with the selected one checked', () => {
-    renderWithProviders(
+    // The radiogroup container is deliberately `accessible={false}` (see
+    // ChoiceGroup.tsx): that's what keeps each radio individually focusable
+    // by assistive tech instead of collapsing the whole row into one opaque
+    // element. RNTL's `getByRole` only matches elements it considers
+    // accessibility elements, which excludes `accessible={false}` nodes, so
+    // this asserts on the raw prop via `UNSAFE_getByProps` instead of
+    // `screen.getByRole` (that escape hatch isn't implemented on the global
+    // `screen` object, hence destructuring it off the render result).
+    const { UNSAFE_getByProps, getByLabelText } = renderWithProviders(
       <ChoiceGroup
         groupLabel="I am a"
         selected="caregiver"
@@ -65,10 +73,12 @@ describe('ChoiceGroup', () => {
         ]}
       />,
     );
-    expect(screen.getByRole('radiogroup')).toBeTruthy();
-    const selected = screen.getByLabelText('Caregiver');
+    expect(UNSAFE_getByProps({ accessibilityRole: 'radiogroup' }).props.accessibilityLabel).toBe(
+      'I am a',
+    );
+    const selected = getByLabelText('Caregiver');
     expect(selected.props.accessibilityState).toEqual({ selected: true, checked: true });
-    const unselected = screen.getByLabelText('Care Recipient');
+    const unselected = getByLabelText('Care Recipient');
     expect(unselected.props.accessibilityState).toEqual({ selected: false, checked: false });
   });
 });
