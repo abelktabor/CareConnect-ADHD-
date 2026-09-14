@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "CareConnect",
+    "slug": "careconnect-mobile",
+    "scheme": "careconnect",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "test.careconnect.mobile"
+    },
+    "android": {
+      "package": "test.careconnect.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "@react-native-community/datetimepicker",
+      "expo-asset",
+      "expo-font",
+      "expo-status-bar"
+    ]
+  }
+}
