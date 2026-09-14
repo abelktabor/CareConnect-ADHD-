@@ -7,7 +7,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "peerDependencies": {
-    "react": "^18.3.1"
+    "react": "^19.3.0"
   },
   "dependencies": {
     "@careconnect/design-tokens": "*"
